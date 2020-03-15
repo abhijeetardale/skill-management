@@ -11,6 +11,9 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.junit4.SpringRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -38,7 +41,7 @@ public class EmployeeRepositoryTest {
 
     @Test
     @Sql("/create-h2.sql")
-    public void givenDataFindByIdThenReturnOneOptionalRecord() {
+    public void givenDataSaveShouldPersistRecordAndFindByIdThenReturnOneOptionalRecord() {
         Organisation org = new Organisation();
         org.setOrgId(1);
         org.setOrgName("NHS");
@@ -53,6 +56,30 @@ public class EmployeeRepositoryTest {
 
         assertThat(organisation.isPresent()).isEqualTo(true);
         assertThat(organisation.get().getEmpName()).isEqualTo("Emp1");
+    }
+
+    @Test
+    @Sql("/create-h2.sql")
+    public void givenListOFDataSaveAllShouldPersistRecordAndFindByIdThenReturnOneOptionalRecord() {
+        Organisation org = new Organisation();
+        org.setOrgId(1);
+        org.setOrgName("NHS");
+        Employee emp1 = new Employee();
+        emp1.setEmpId(1);
+        emp1.setEmpName("Emp1");
+        emp1.setOrganisation(org);
+        Employee emp2 = new Employee();
+        emp2.setEmpId(2);
+        emp2.setEmpName("Emp2");
+        emp2.setOrganisation(org);
+        List<Employee> employeeList = new ArrayList<Employee>(Arrays.asList(emp1, emp2));
+        organisationRepository.save(org);
+        employeeRepository.saveAll(employeeList);
+        List<Employee> organisations = employeeRepository.findAll();
+
+        assertThat(organisations.size()).isEqualTo(2);
+        assertThat(organisations.get(0).getEmpName()).isEqualTo("Emp1");
+        assertThat(organisations.get(1).getEmpName()).isEqualTo("Emp2");
     }
 
     @After
