@@ -35,7 +35,7 @@ public class OrganisationControllerTest {
         Organisation org = new Organisation();
         org.setOrgId(1);
         org.setOrgName("NHS");
-        List<Organisation> organisationList = new ArrayList<Organisation>(Arrays.asList(org));
+
         when(organisationRepository.findById(1)).thenReturn(Optional.of(org));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
@@ -45,6 +45,24 @@ public class OrganisationControllerTest {
 
         assertThat(result.getOrgId()).isEqualTo(1);
         assertThat(result.getOrgName()).isEqualTo("NHS");
+    }
+
+    @Test
+    public void getOrganisationsShouldReturnAllOrganisations() throws Exception {
+        Organisation org = new Organisation();
+        org.setOrgId(1);
+        org.setOrgName("NHS");
+        List<Organisation> organisationList = new ArrayList<Organisation>(Arrays.asList(org));
+        when(organisationRepository.findAll()).thenReturn(organisationList);
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        List<Organisation> result = organisationController.getOrganisations();
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getOrgId()).isEqualTo(1);
+        assertThat(result.get(1).getOrgName()).isEqualTo("NHS");
     }
 
 }
