@@ -32,6 +32,12 @@ public class OrganisationRepositoryTest {
         assertThat(organisation.isPresent()).isEqualTo(false);
     }
 
+    @Test
+    public void givenDataFindByIdThenReturnOneOptionalRecord() {
+        Optional<Organisation> organisation = organisationRepository.findById(1);
+
+        assertThat(organisation.isPresent()).isEqualTo(false);
+    }
 
     @After
     public void cleanUp() {
