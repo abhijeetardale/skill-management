@@ -33,10 +33,11 @@ public class OrganisationRepositoryTest {
     }
 
     @Test
+    @Sql("/create-h2.sql")
     public void givenDataFindByIdThenReturnOneOptionalRecord() {
         Optional<Organisation> organisation = organisationRepository.findById(1);
 
-        assertThat(organisation.isPresent()).isEqualTo(false);
+        assertThat(organisation.isPresent()).isEqualTo(true);
     }
 
     @After
