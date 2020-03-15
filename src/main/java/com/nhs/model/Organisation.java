@@ -1,10 +1,8 @@
 package com.nhs.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "ORGANISATION")
@@ -16,6 +14,9 @@ public class Organisation implements Serializable {
 
     @Column(name = "orgName")
     String orgName;
+
+    @OneToMany(mappedBy="empId", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    private List<Employee> employees;
 
     public Integer getOrgId() {
         return orgId;
@@ -31,5 +32,13 @@ public class Organisation implements Serializable {
 
     public void setOrgName(String orgName) {
         this.orgName = orgName;
+    }
+
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
     }
 }
