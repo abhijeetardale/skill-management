@@ -62,7 +62,7 @@ public class OrganisationControllerTest {
 
         assertThat(result.size()).isEqualTo(1);
         assertThat(result.get(0).getOrgId()).isEqualTo(1);
-        assertThat(result.get(1).getOrgName()).isEqualTo("NHS");
+        assertThat(result.get(0).getOrgName()).isEqualTo("NHS");
     }
 
 }
