@@ -15,6 +15,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -30,21 +31,20 @@ public class OrganisationControllerTest {
     private OrganisationRepository organisationRepository;
 
     @Test
-    public void greetingShouldReturnMessageFromService() throws Exception {
+    public void getOrganisationByIdShouldReturnOrganisation() throws Exception {
         Organisation org = new Organisation();
         org.setOrgId(1);
         org.setOrgName("NHS");
         List<Organisation> organisationList = new ArrayList<Organisation>(Arrays.asList(org));
-        when(organisationRepository.findAll()).thenReturn(new ArrayList<Organisation>(Arrays.asList(org)));
+        when(organisationRepository.findById(1)).thenReturn(Optional.of(org));
 
         MockHttpServletRequest request = new MockHttpServletRequest();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
 
-        List<Organisation> result = organisationController.getOrganisationById();
+        Organisation result = organisationController.getOrganisationById(1);
 
-        assertThat(result.size()).isEqualTo(1);
-        assertThat(result.get(0).getOrgId()).isEqualTo(1);
-        assertThat(result.get(0).getOrgName()).isEqualTo("NHS");
+        assertThat(result.getOrgId()).isEqualTo(1);
+        assertThat(result.getOrgName()).isEqualTo("NHS");
     }
 
 }
