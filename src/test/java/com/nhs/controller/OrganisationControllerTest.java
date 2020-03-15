@@ -1,0 +1,50 @@
+package com.nhs.controller;
+import com.nhs.model.Organisation;
+import com.nhs.repository.OrganisationRepository;
+import org.junit.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.mock.web.MockHttpServletRequest;
+import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.when;
+
+@ExtendWith(MockitoExtension.class)
+@RunWith(SpringRunner.class)
+public class OrganisationControllerTest {
+
+    @InjectMocks
+    OrganisationController organisationController;
+
+    @Mock
+    private OrganisationRepository organisationRepository;
+
+    @Test
+    public void greetingShouldReturnMessageFromService() throws Exception {
+        Organisation org = new Organisation();
+        org.setOrgId(1);
+        org.setOrgName("NHS");
+        List<Organisation> organisationList = new ArrayList<Organisation>(Arrays.asList(org));
+        when(organisationRepository.findAll()).thenReturn(new ArrayList<Organisation>(Arrays.asList(org)));
+
+        MockHttpServletRequest request = new MockHttpServletRequest();
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+
+        List<Organisation> result = organisationController.getOrganisationById();
+
+        assertThat(result.size()).isEqualTo(1);
+        assertThat(result.get(0).getOrgId()).isEqualTo(1);
+        assertThat(result.get(0).getOrgName()).isEqualTo("NHS");
+    }
+
+}
