@@ -23,6 +23,9 @@ public class EmployeeRepositoryTest {
     TestEntityManager entityManager;
 
     @Autowired
+    private OrganisationRepository organisationRepository;
+
+    @Autowired
     private EmployeeRepository employeeRepository;
 
     @Test
@@ -31,6 +34,25 @@ public class EmployeeRepositoryTest {
         Optional<Employee> organisation = employeeRepository.findById(1);
 
         assertThat(organisation.isPresent()).isEqualTo(false);
+    }
+
+    @Test
+    @Sql("/create-h2.sql")
+    public void givenDataFindByIdThenReturnOneOptionalRecord() {
+        Organisation org = new Organisation();
+        org.setOrgId(1);
+        org.setOrgName("NHS");
+        Employee emp = new Employee();
+        emp.setEmpId(1);
+        emp.setEmpName("Emp1");
+        emp.setOrganisation(org);
+
+        organisationRepository.save(org);
+        employeeRepository.save(emp);
+        Optional<Employee> organisation = employeeRepository.findById(1);
+
+        assertThat(organisation.isPresent()).isEqualTo(true);
+        assertThat(organisation.get().getEmpName()).isEqualTo("Emp1");
     }
 
     @After
