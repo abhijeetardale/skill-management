@@ -1,0 +1,69 @@
+
+DROP TABLE IF EXISTS EMPLOYEE, EMPLOYEE_SKILLS, SKILL, PROFICIENCY, ORGANISATION;
+
+CREATE TABLE ORGANISATION (
+  orgId INT AUTO_INCREMENT  PRIMARY KEY,
+  orgName VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE PROFICIENCY (
+  pId INT AUTO_INCREMENT  PRIMARY KEY,
+  pName VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE SKILL (
+  sId INT AUTO_INCREMENT PRIMARY KEY,
+  sName VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE EMPLOYEE (
+  empId INT AUTO_INCREMENT PRIMARY KEY,
+  empName VARCHAR(20) NOT NULL,
+  orgId INT,
+  FOREIGN KEY(orgId) REFERENCES ORGANISATION(orgId)
+);
+
+CREATE TABLE EMPLOYEE_SKILLS (
+  empId INT,
+  sId INT,
+  pId INT,
+  PRIMARY KEY(empId, sId),
+  FOREIGN KEY(pId) REFERENCES PROFICIENCY(pId)
+);
+
+
+INSERT INTO ORGANISATION (orgId, orgName) VALUES
+  (1,'NHS');
+
+INSERT INTO PROFICIENCY (pId, pName) VALUES
+  (11,'Expert'),
+  (12,'Practitioner'),
+  (13,'Working'),
+  (14,'Awareness');
+
+INSERT INTO SKILL (sId, sName) VALUES
+  (31,'Java'),
+  (32,'Scala'),
+  (33,'JavaScript'),
+  (34,'Go'),
+  (35,'.Net');
+
+INSERT INTO EMPLOYEE (empId, empName, orgId) VALUES
+  (111,'AB', 1),
+  (112,'AP', 1),
+  (113,'GE', 1),
+  (114,'NR', 1),
+  (115,'.SC', 1),
+  (116,'.KD', 1);
+
+INSERT INTO EMPLOYEE_SKILLS (empId, sId, pId) VALUES
+  (111, 31, 14),
+  (111, 32, 13),
+  (112, 32, 12),
+  (112, 34, 14),
+  (113, 31, 12),
+  (113, 32, 13),
+  (113, 33, 13),
+  (114, 35, 14),
+  (115, 34, 11),
+  (116, 35, 12);

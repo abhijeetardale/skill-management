@@ -1,5 +1,7 @@
 package com.nhs.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
@@ -16,6 +18,7 @@ public class Organisation implements Serializable {
     String orgName;
 
     @OneToMany(mappedBy="empId", fetch=FetchType.LAZY, cascade=CascadeType.ALL)
+    @JsonIgnore
     private List<Employee> employees;
 
     public Integer getOrgId() {

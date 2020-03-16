@@ -17,11 +17,13 @@ public class OrganisationController {
 
     @GetMapping(value = "/organisation/{id}")
     Organisation getOrganisationById(@PathVariable Integer id){
+
         return  organisationRepository.findById(id).get();
     }
 
     @GetMapping(value = "/organisations")
     public List<Organisation> getOrganisations() {
+
         return  organisationRepository.findAll();
     }
 }
